@@ -7,6 +7,15 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        <ul class="list-group">
+          <a href="/" class="list-group-item">home</a>
+          {% if is_granted('ROLE_USER') %}
+            <a href="/logout" class="list-group-item">logout</a>
+          {% else %}
+            <a href="/login" class="list-group-item">login</a>
+            <a href="/register" class="list-group-item">register</a>
+          {% endif %}
+        </ul> 
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
