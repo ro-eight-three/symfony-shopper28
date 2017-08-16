@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul>
+    {% for shoplist in shoplists %}
+        <li>{{ shoplist.name }}</li>
+    {% else %}
+        <li>No shoplists found</li>
+    {% endfor %}
+</ul>
+{% endblock %}

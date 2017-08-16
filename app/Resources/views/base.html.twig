@@ -15,7 +15,13 @@
             <a href="/login" class="list-group-item">login</a>
             <a href="/register" class="list-group-item">register</a>
           {% endif %}
-        </ul> 
+        </ul>
+        {% if is_granted('ROLE_USER') %}
+        <ul class="list-group">
+          <a href="/shoplist/" class="list-group-item">shoplists</a>
+          <a href="/shoplist/create" class="list-group-item">New</a>
+        </ul>
+        {% endif %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

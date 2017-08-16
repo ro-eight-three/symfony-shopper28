@@ -14,15 +14,15 @@ class Shoplist
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    protected $name;
+    public $name;
     
     /**
      * @ORM\ManyToOne(targetEntity="User")
      **/
-    protected $owner;
+    public $owner;
 }
