@@ -15,8 +15,11 @@ class ShoplistController extends Controller
      */
     public function listallAction(Request $request)
     {
+        # TODO do this in the security config somehow
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Login required');
+
         $repository = $this->getDoctrine()->getRepository(Shoplist::class);
-        $shoplists = $repository->findAll();
+        $shoplists = $repository->findByOwner($this->getUser());
         
         return $this->render('shoplist/listall.html.twig', array(
             'shoplists' => $shoplists,

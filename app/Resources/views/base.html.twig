@@ -11,6 +11,7 @@
           <a href="/" class="list-group-item">home</a>
           {% if is_granted('ROLE_USER') %}
             <a href="/logout" class="list-group-item">logout</a>
+            <span>{{ app.user }}</span>
           {% else %}
             <a href="/login" class="list-group-item">login</a>
             <a href="/register" class="list-group-item">register</a>
