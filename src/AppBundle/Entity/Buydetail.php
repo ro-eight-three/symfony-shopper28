@@ -9,20 +9,38 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Buydetail
 {
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Shoplist")
-     **/
-    protected $shoplist;
-    
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Product")
-     **/
-    protected $product;
+	public function __construct($shoplist, $product, $quantity)
+	{
+		$this->shoplist = $shoplist;
+		$this->product = $product;
+		$this->quantity = $quantity;
+	}
 
-    /**
-     * @ORM\Column(type="integer")
-     **/    
-    protected $quantity;
+	public static function remove($doctrine, $shoplist_id, $product_id)
+	{
+		$buydetail = $doctrine->getRepository(Buydetail::class)->find([
+			'shoplist' => $shoplist_id,
+			'product' => $product_id,
+		]);
+
+		$em = $doctrine->getManager();
+		$em->remove($buydetail);
+		$em->flush();
+	}
+
+	/**
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Shoplist")
+	 **/
+	public $shoplist;
+			/**
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Product")
+	 **/
+	public $product;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 **/
+	public $quantity;
 }

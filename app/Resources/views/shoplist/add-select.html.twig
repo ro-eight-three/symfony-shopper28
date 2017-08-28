@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+<table>
+	{% for product in products %}
+		<tr>
+			<td>{{ product.id }}</td>
+			<td>{{ product.name }}</td>
+			<td>
+			<form
+				action="{{ path('add-buydetail', {'shoplist_id': shoplist.id, 'product_id': product.id}) }}"
+				method="POST">
+				<button type="submit">add</button>
+			</form>
+			</td>
+		</tr>
+	{% else %}
+		<span>Nothing in this list</span>
+	{% endfor %}
+</table>
+
+{% if shoplist is defined %}
+	<a href="{{ path('shoplist-contents', {'id': shoplist.id}) }}">Back</a>
+{% endif %}
+
+{% endblock %}

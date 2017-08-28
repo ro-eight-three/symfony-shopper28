@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        <ul class="list-group">
-          <a href="/" class="list-group-item">home</a>
-          {% if is_granted('ROLE_USER') %}
-            <a href="/logout" class="list-group-item">logout</a>
-            <span>{{ app.user }}</span>
-          {% else %}
-            <a href="/login" class="list-group-item">login</a>
-            <a href="/register" class="list-group-item">register</a>
-          {% endif %}
-        </ul>
-        {% if is_granted('ROLE_USER') %}
-        <ul class="list-group">
-          <a href="/shoplist/" class="list-group-item">shoplists</a>
-          <a href="/shoplist/create" class="list-group-item">New</a>
-        </ul>
-        {% endif %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>{% block title %}Welcome!{% endblock %}</title>
+		{% block stylesheets %}{% endblock %}
+		<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+	</head>
+	<body>
+		<ul class="list-group">
+			<a href="/" class="list-group-item">home</a>
+			{% if is_granted('ROLE_USER') %}
+				<a href="/logout" class="list-group-item">logout</a>
+				<span>{{ app.user }}</span>
+			{% else %}
+				<a href="/login" class="list-group-item">login</a>
+				<a href="/register" class="list-group-item">register</a>
+			{% endif %}
+		</ul>
+		{% if is_granted('ROLE_USER') %}
+		<ul class="list-group">
+			<a href="{{ path('shoplist-listall') }}" class="list-group-item">shoplists</a>
+			<a href="{{ path('shoplist-create') }}" class="list-group-item">new</a>
+			<a href="{{ path('shoplist-products') }}" class="list-group-item">products</a>
+		</ul>
+		{% endif %}
+
+		{% for type, flash_messages in app.session.flashBag.all %}
+			{% for flash_message in flash_messages %}
+				<ul>{{ flash_message }}</ul>
+			{% endfor %}
+		{% endfor %}
+
+		{% block body %}{% endblock %}
+		{% block javascripts %}{% endblock %}
+	</body>
 </html>

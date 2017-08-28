@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Shoplists{% endblock %}
+
 {% block body %}
 <ul>
-    {% for shoplist in shoplists %}
-        <li>{{ shoplist.name }}</li>
-    {% else %}
-        <li>No shoplists found</li>
-    {% endfor %}
+	{% for shoplist in shoplists %}
+		<li>
+			<a href="{{ path('shoplist-contents', {'id': shoplist.id}) }}">
+				{{ shoplist.name }}
+			</a>
+		</li>
+	{% else %}
+		<li>No shoplists found</li>
+	{% endfor %}
 </ul>
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contents of {{ shoplist.name }}{% endblock %}
+
+{% block body %}
+<h2>contents of <h1>{{ shoplist.name }}</h1></h2>
+<ul>
+		{% for buydetail in buydetails %}
+				<li>
+						<span>{{ buydetail.product.id }} - {{ buydetail.product.name }}</span>
+						<form
+								method="POST"
+								action="{{ path('remove-buydetail', {'shoplist_id': shoplist.id, 'product_id': buydetail.product.id}) }}">
+								<button type="submit">remove</button>
+						</form>
+				</li>
+		{% else %}
+				<li>Nothing in this list</li>
+		{% endfor %}
+</ul>
+
+<a href="{{ path('shoplist-add-new', {'id': shoplist.id}) }}">add new</a>
+<a href="{{ path('shoplist-add-select', {'id': shoplist.id}) }}">select new</a>
+<a href="{{ path('shoplist-add-many', {'id': shoplist.id}) }}">add many</a>
+
+{% endblock %}

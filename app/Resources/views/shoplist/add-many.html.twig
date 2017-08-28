@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+<form method="POST">
+	<table>
+		{% for product in products %}
+			<tr>
+				<td><input type="checkbox" name="product_id[]" value="{{ product.id }}"/></td>
+				<td>{{ product.id }}</td>
+				<td>{{ product.name }}</td>
+			</tr>
+		{% else %}
+			<span>Nothing in this list</span>
+		{% endfor %}
+	</table>
+	<button type="submit">add selected</button>
+</form>
+
+{% if shoplist is defined %}
+	<a href="{{ path('shoplist-contents', {'id': shoplist.id}) }}">Back</a>
+{% endif %}
+
+{% endblock %}
