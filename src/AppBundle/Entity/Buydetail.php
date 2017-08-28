@@ -43,4 +43,9 @@ class Buydetail
 	 * @ORM\Column(type="integer")
 	 **/
 	public $quantity;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 **/
+	public $marked = false;
 }

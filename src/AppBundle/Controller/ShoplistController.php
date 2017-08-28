@@ -143,11 +143,18 @@ class ShoplistController extends Controller
 
 		if ($request->getMethod() == 'POST')
 		{
+			$product_ids = $request->request->get('product_id');
+
 			try {
+				if (!$product_ids)
+				{
+					throw new \Exception("No products selected");
+				}
+
 				$em = $this->getDoctrine()->getManager();
 				$repo = $em->getRepository(Product::class);
 
-				foreach ($request->request->get('product_id') as $product_id)
+				foreach ($product_ids as $product_id)
 				{
 					$product = $repo->find($product_id);
 					if ($product)
@@ -192,11 +199,35 @@ class ShoplistController extends Controller
 	 */
 	public function removeBuydetailAction(Request $request, $shoplist_id, $product_id)
 	{
-		try {
-			$shoplist = $this->getShoplistIfOwner($shoplist_id);
+		$shoplist = $this->getShoplistIfOwner($shoplist_id);
 
+		try {
 			Buydetail::remove($this->getDoctrine(), $shoplist_id, $product_id);
 
+		} catch (\Exception $e) {
+			$this->exeptionToFlash($e);
+		}
+
+		return $this->redirectToRoute('shoplist-contents', array(
+			'id' => $shoplist->id,
+		));
+	}
+
+	/**
+	 * @Route("/shoplist/{shoplist_id}/toggle/{product_id}", name="toggle-buydetail")
+	 */
+	public function toggleBuydetailAction(Request $request, $shoplist_id, $product_id)
+	{
+		$shoplist = $this->getShoplistIfOwner($shoplist_id);
+
+		try {
+			$em = $this->getDoctrine()->getManager();
+			$buydetail = $em->getRepository(Buydetail::class)->find([
+				'shoplist' => $shoplist_id,
+				'product' => $product_id,
+			]);
+			$buydetail->marked = !$buydetail->marked;
+			$em->flush();
 		} catch (\Exception $e) {
 			$this->exeptionToFlash($e);
 		}

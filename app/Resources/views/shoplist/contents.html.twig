@@ -4,20 +4,33 @@
 
 {% block body %}
 <h2>contents of <h1>{{ shoplist.name }}</h1></h2>
-<ul>
-		{% for buydetail in buydetails %}
-				<li>
-						<span>{{ buydetail.product.id }} - {{ buydetail.product.name }}</span>
-						<form
-								method="POST"
-								action="{{ path('remove-buydetail', {'shoplist_id': shoplist.id, 'product_id': buydetail.product.id}) }}">
-								<button type="submit">remove</button>
-						</form>
-				</li>
-		{% else %}
-				<li>Nothing in this list</li>
-		{% endfor %}
-</ul>
+<table>
+	{% for buydetail in buydetails %}
+		<tr>
+			<td>{{ buydetail.product.id }}</td>
+			<td>{{ buydetail.product.name }}</td>
+			<td>
+				<form
+					method="POST"
+					action="{{ path('remove-buydetail', {'shoplist_id': shoplist.id, 'product_id': buydetail.product.id}) }}">
+					<button type="submit">remove</button>
+				</form>
+			</td>
+			<td>
+				<form
+					method="POST"
+					action="{{ path('toggle-buydetail', {'shoplist_id': shoplist.id, 'product_id': buydetail.product.id}) }}">
+					<button type="submit">mark</button>
+				</form>
+			</td>
+			{% if buydetail.marked %}
+			<td>IS</td>
+			{% endif %}
+		</tr>
+	{% else %}
+			<li>Nothing in this list</li>
+	{% endfor %}
+</table>
 
 <a href="{{ path('shoplist-add-new', {'id': shoplist.id}) }}">add new</a>
 <a href="{{ path('shoplist-add-select', {'id': shoplist.id}) }}">select new</a>
