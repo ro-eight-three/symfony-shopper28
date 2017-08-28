@@ -3,15 +3,24 @@
 {% block title %}Shoplists{% endblock %}
 
 {% block body %}
-<ul>
+<table>
 	{% for shoplist in shoplists %}
-		<li>
-			<a href="{{ path('shoplist-contents', {'id': shoplist.id}) }}">
-				{{ shoplist.name }}
-			</a>
-		</li>
+		<tr>
+			<td>
+				<a href="{{ path('shoplist-contents', {'id': shoplist.id}) }}">
+					{{ shoplist.name }}
+				</a>
+			</td>
+			<td>
+				<form
+					method="POST"
+					action="{{ path('shoplist-remove', {'id': shoplist.id}) }}">
+					<button type="submit">remove</button>
+				</form>
+			</td>
+		</tr>
 	{% else %}
-		<li>No shoplists found</li>
+		<tr><td>No shoplists found</td></tr>
 	{% endfor %}
-</ul>
+</table>
 {% endblock %}

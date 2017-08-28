@@ -87,6 +87,28 @@ class ShoplistController extends Controller
 	}
 
 	/**
+	 * @Route("/shoplist/remove/{id}", name="shoplist-remove")
+	 */
+	public function removeAction(Request $request, $id)
+	{
+		$shoplist = $this->getShoplistIfOwner($id);
+		$em = $this->getDoctrine()->getManager();
+
+		$buydetails = $em->getRepository(Buydetail::class)->findByShoplist($shoplist);
+		if ($buydetails)
+		{
+			foreach($buydetails as $buydetail)
+			{
+				$em->remove($buydetail);
+			}
+		}
+		$em->remove($shoplist);
+		$em->flush();
+
+		return $this->redirectToRoute('shoplist-listall');
+	}
+
+	/**
 	 * @Route("/shoplist/{id}", name="shoplist-contents")
 	 */
 	public function contentsAction(Request $request, $id)
