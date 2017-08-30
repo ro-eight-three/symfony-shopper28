@@ -10,36 +10,42 @@ use AppBundle\Entity\Shoplist;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Buydetail;
 
-class BuydetailController extends Controller
+class BuydetailController extends ConvenientController
 {
-	private function asserIsPostRequest($request)
-	{
-		if ($request->getMethod() != 'POST')
-		{
-			throw new AccessDeniedException();
-		}
-	}
-
 	/**
 	 * @Route("/buydetail/add/{product_id}/to/{shoplist_id}", name="buydetail-add")
 	 */
 	public function addAction(Request $request, $product_id, $shoplist_id)
 	{
-		$this->asserIsPostRequest($request);
+		$this->assertIsPostRequest($request);
 
 		try {
+			$quantity_param = $request->request->get('quantity');
+			if ("x$quantity_param" !== "x")
+			{
+				$quantity = intval($quantity_param);
+				if ($quantity === 0)
+				{
+					throw new \Exception("Invalid quantity value '{$quantity_param}'");
+				}
+			}
+			else
+			{
+				$quantity = 1;
+			}
+
 			$shoplist = Shoplist::getIfOwner($this, $shoplist_id);
 			$product = Product::fetchOrNotFoundException($this->getDoctrine(), $product_id);
 
 			$em = $this->getDoctrine()->getManager();
-			$em->persist(new Buydetail($shoplist, $product, 1));
+			$em->persist(new Buydetail($shoplist, $product, $quantity));
 			$em->flush();
 
 		} catch (\Exception $e) {
 			$this->exeptionToFlash($e);
 		}
 
-		return $this->redirectToRoute('buydetail-select', ['shoplist_id' => $shoplist->id,]);
+		return $this->redirectToRoute('buydetail-select', ['shoplist_id' => $shoplist_id,]);
 	}
 
 	/**
@@ -47,7 +53,7 @@ class BuydetailController extends Controller
 	 */
 	public function removeAction(Request $request, $shoplist_id, $product_id)
 	{
-		$this->asserIsPostRequest($request);
+		$this->assertIsPostRequest($request);
 
 		$shoplist = Shoplist::getIfOwner($this, $shoplist_id);
 
@@ -66,7 +72,7 @@ class BuydetailController extends Controller
 	 */
 	public function toggleAction(Request $request, $product_id, $shoplist_id)
 	{
-		$this->asserIsPostRequest($request);
+		$this->assertIsPostRequest($request);
 
 		$shoplist = Shoplist::getIfOwner($this, $shoplist_id);
 

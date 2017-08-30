@@ -11,13 +11,8 @@ use AppBundle\Entity\Buydetail;
 use AppBundle\Entity\Product;
 use AppBundle\Controller\BuydetailController;
 
-class ShoplistController extends Controller
+class ShoplistController extends ConvenientController
 {
-	private function exeptionToFlash(\Exception $e)
-	{
-		$this->addFlash('error', $e->getMessage());
-	}
-
 	/**
 	 * @Route("/shoplist/", name="shoplist-listall")
 	 */

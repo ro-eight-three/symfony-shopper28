@@ -11,7 +11,7 @@ use AppBundle\Entity\Shoplist;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Buydetail;
 
-class ProductController extends Controller
+class ProductController extends ConvenientController
 {
 	/**
 	 * @Route("/product/create/for/{shoplist_id}", name="product-create")
