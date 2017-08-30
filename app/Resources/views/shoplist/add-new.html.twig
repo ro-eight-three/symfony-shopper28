@@ -3,7 +3,11 @@
 {% block title %}Add new{% endblock %}
 
 {% block body %}
+
+<h1>add to {{ shoplist.name }}</h1>
+
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
+
 {% endblock %}

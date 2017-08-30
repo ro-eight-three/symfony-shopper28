@@ -3,6 +3,9 @@
 {% block title %}Products{% endblock %}
 
 {% block body %}
+
+<h1>add to {{ shoplist.name }}</h1>
+
 <form method="POST">
 	<table>
 		{% for product in products %}

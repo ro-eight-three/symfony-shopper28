@@ -151,9 +151,10 @@ class ShoplistController extends Controller
 			}
 		}
 
-		return $this->render('shoplist/add-new.html.twig', array(
+		return $this->render('shoplist/add-new.html.twig', [
 			'form' => $form->createView(),
-		));
+			'shoplist' => $shoplist,
+		]);
 	}
 
 	/**
@@ -205,7 +206,7 @@ class ShoplistController extends Controller
 	/**
 	 * @Route("/shoplist/{id}/add-select", name="shoplist-add-select")
 	 */
-	public function addSelectAction(Request $request, $id)//, $success_url)
+	public function addSelectAction(Request $request, $id)
 	{
 		$shoplist = $this->getShoplistIfOwner($id);
 		$products = Product::getAllNotInShoplist($this->getDoctrine(), $shoplist);
@@ -276,8 +277,6 @@ class ShoplistController extends Controller
 			$this->exeptionToFlash($e);
 		}
 
-		return $this->redirectToRoute('shoplist-contents', array(
-			'id' => $shoplist->id,
-		));
+		return $this->redirectToRoute('shoplist-add-select', ['id' => $shoplist->id,]);
 	}
 }
