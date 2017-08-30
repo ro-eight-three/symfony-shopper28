@@ -13,7 +13,7 @@
 			<td>{{ product.name }}</td>
 			<td>
 			<form
-				action="{{ path('add-buydetail', {'shoplist_id': shoplist.id, 'product_id': product.id}) }}"
+				action="{{ path('buydetail-add', {'shoplist_id': shoplist.id, 'product_id': product.id}) }}"
 				method="POST">
 				<button type="submit">add</button>
 			</form>

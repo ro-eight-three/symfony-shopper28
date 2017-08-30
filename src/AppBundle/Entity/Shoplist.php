@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @ORM\Entity
@@ -36,7 +38,24 @@ class Shoplist
 
 		return $shoplist;
 	}
-			/**
+
+	public static function getIfOwner($controller, $shoplist_id)
+	{
+		$shoplist = $controller->getDoctrine()->getManager()
+			->getRepository(Shoplist::class)->find($shoplist_id);
+
+		if (!$shoplist)
+		{
+			throw new NotFoundHttpException();
+		}
+		if ($shoplist->owner !== $controller->getUser())
+		{
+			throw new AccessDeniedException();
+		}
+		return $shoplist;
+	}
+
+	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
